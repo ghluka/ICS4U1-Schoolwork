@@ -105,6 +105,7 @@ def distinct_prices(prices:list[float]):
     Returns a list of all distinct price amounts in inventory (i.e., with no
     duplicates), in order from lowest price to highest price.
     """
+    return sorted(set(prices))
 
 
 def price_counts(prices:list[float]):
@@ -117,6 +118,15 @@ def price_counts(prices:list[float]):
        $_25.23: 2 products
        etc...
     """
+    prices_counted = ""
+    
+    for price in distinct_prices(prices):
+        count = prices.count(price)
+        prices_counted += f"\n${price:_>6}: {count} product"
+        if count != 1:
+            prices_counted += "s"
+    
+    return prices_counted[1:]
 
 
 if __name__ == "__main__":
@@ -138,13 +148,13 @@ if __name__ == "__main__":
     in_file.close()
 
     # Outputs
-    print(f"Avg # per prod: {avg_qty_per_product(qtys):.0f}")
-    print(f"# of most $: {qty_of_most_expensive(qtys, prices)}")
-    print(f"Total inv. value: ${total_inventory_value(qtys, prices):.2f}")
-    print(f"Avg $ per item: ${avg_price_per_item(qtys, prices):.2f}")
-    print(f"Median $ per prod: ${median_price_per_product(prices):.2f}")
+    #print(f"Avg # per prod: {avg_qty_per_product(qtys):.0f}")
+    #print(f"# of most $: {qty_of_most_expensive(qtys, prices)}")
+    #print(f"Total inv. value: ${total_inventory_value(qtys, prices):.2f}")
+    #print(f"Avg $ per item: ${avg_price_per_item(qtys, prices):.2f}")
+    #print(f"Median $ per prod: ${median_price_per_product(prices):.2f}")
     #print(pretty_inventory(qtys, prices))
-    print(f"Most valuable product: ${most_valuable_product(prices)}")
-    ####!products_in_price_range
-    print(f"Most valuable product: ${distinct_prices(prices)}")
-    print(f"Most valuable product: ${price_counts(prices)}")
+    #print(f"Most valuable product: {most_valuable_product(qtys, prices)}")
+    print(f"Products in price range of 1$ to 2$: {products_in_price_range(prices, 1, 2)}")
+    #print(f"Distinct products: {distinct_prices(prices)}")
+    #print(f"Price counts: {price_counts(prices)}")
