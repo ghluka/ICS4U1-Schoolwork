@@ -56,7 +56,9 @@ def median_price_per_product(prices:list[float]) -> float:
     """
     Returns average price per single inventory item.
     """
+    prices = prices.copy()
     prices.sort()
+
     median = 0
 
     if len(prices) % 2 == 0:
@@ -98,6 +100,13 @@ def products_in_price_range(prices:list[float], end1, end2):
     """
     Returns the number of products that have a price between end1 and end2 (inclusive).
     """
+    prices_in_range = [] 
+
+    for price in prices:
+        if price >= end1 and price <= end2:
+            prices_in_range.append(price)
+
+    return prices_in_range
 
 
 def distinct_prices(prices:list[float]): 
@@ -131,7 +140,7 @@ def price_counts(prices:list[float]):
 
 if __name__ == "__main__":
     filename = "inventory.txt"
-    #make_input_file(10, filename)
+    make_input_file(1234, filename)
 
     # Read file
     qtys = []
@@ -148,13 +157,13 @@ if __name__ == "__main__":
     in_file.close()
 
     # Outputs
-    #print(f"Avg # per prod: {avg_qty_per_product(qtys):.0f}")
-    #print(f"# of most $: {qty_of_most_expensive(qtys, prices)}")
-    #print(f"Total inv. value: ${total_inventory_value(qtys, prices):.2f}")
-    #print(f"Avg $ per item: ${avg_price_per_item(qtys, prices):.2f}")
-    #print(f"Median $ per prod: ${median_price_per_product(prices):.2f}")
-    #print(pretty_inventory(qtys, prices))
-    #print(f"Most valuable product: {most_valuable_product(qtys, prices)}")
-    print(f"Products in price range of 1$ to 2$: {products_in_price_range(prices, 1, 2)}")
-    #print(f"Distinct products: {distinct_prices(prices)}")
-    #print(f"Price counts: {price_counts(prices)}")
+    ##print(f"Avg # per prod: {avg_qty_per_product(qtys):.0f}")
+    ##print(f"# of most $: {qty_of_most_expensive(qtys, prices)}")
+    ##print(f"Total inv. value: ${total_inventory_value(qtys, prices):.2f}")
+    ##print(f"Avg $ per item: ${avg_price_per_item(qtys, prices):.2f}")
+    ##print(f"Median $ per prod: ${median_price_per_product(prices):.2f}")
+    ##print(pretty_inventory(qtys, prices))
+    ##print(f"Most valuable product: {most_valuable_product(qtys, prices)}")
+    ##print(f"Products in price range of 1$ to 2$: {products_in_price_range(prices, 1, 2)}")
+    ##print(f"Distinct products: {distinct_prices(prices)}")
+    ##print(f"Price counts: {price_counts(prices)}")
