@@ -22,8 +22,8 @@ class Fraction(object):
             frac2 = Fraction(*float(frac2).as_integer_ratio())
 
         return Fraction(
-            frac1.numerator * frac2.numerator,
-            frac1.denominator * frac2.denominator
+            self.numerator * frac2.numerator,
+            self.denominator * frac2.denominator
             )
 
     def __str__(self) -> str:
