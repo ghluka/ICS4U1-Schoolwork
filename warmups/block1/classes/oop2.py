@@ -1,3 +1,5 @@
+BAR_WIDTH = 25
+
 class Food(object):
     """A class that models a food item, with a name, number of calories, and identifier."""
     
@@ -72,23 +74,19 @@ class Meal(object):
         Eats the Food that matches the given argument.
         Returns the number of calories eaten.
         """
-        if not food:
-            return 0
-
+        calories = 0
         foods = []
 
         for f in self.__foods:
             if f.get_id() != food.get_id():
                 foods.append(f)
-
-        if len(self.__foods) == len(foods):
-            return 0
+            else:
+                calories += food.get_calories()
 
         self.__foods = foods
-        return food.get_calories()
+        return calories
 
 if __name__ == "__main__":
-    BAR_WIDTH = 25
     #use these if you auto-generate ID's:
     #chs = Food("cheese", 80)
     #slmi = Food("salami", 120)
