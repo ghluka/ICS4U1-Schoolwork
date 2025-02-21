@@ -6,44 +6,61 @@ from typing import Self
 # Put your Product class here
 
 class Product(object):
-    def get_unique_id():
-        pass
+    """A class that models a product with a quantity, price, name, and numerical identifier."""
 
-    def __init__(self, quantity:int, price:float, name:str, id:int):
+    ids = []
+    
+    def get_unique_id():
+        """Returns a unique 5-digit integer ID."""
+        return int(f"{max(Product.ids) + 1:0>5}")
+
+    def __init__(self, quantity:int, price:float, name:str, id:int=None):
+        if not id:
+            id = Product.get_unique_id()
+
         self.__quantity = quantity
         self.__price = price
         self.__name = name
         self.__id = id
 
     def get_name(self) -> int:
+        """Accessor for the product's name."""
         return self.__name
 
     def get_quantity(self) -> float:
+        """Accessor for the product's quantity."""
         return self.__quantity
 
     def get_price(self) -> str:
+        """Accessor for the product's price."""
         return self.__price
 
     def get_id(self) -> int:
+        """Accessor for the product's id."""
         return self.__id
 
     def set_quantity(self, quantity:int) -> None:
+        """Mutator for the product's quantity."""
         self.__quantity = quantity
 
     def __gt__(self, product2) -> bool:
-        pass
+        if self.__price == product2.get_price():
+            return self.__name > product2.get_name()
+        return self.__price > product2.get_price()
 
     def __lt__(self, product2) -> bool:
-        pass
+        if self.__price == product2.get_price():
+            return self.__name < product2.get_name()
+        return self.__price < product2.get_price()
 
     def __eq__(self, product2) -> bool:
-        pass
+        return self.__price == product2.get_price() and self.__name == product2.get_name()
 
     def __str__(self) -> str:
-        pass
+        return f"{self.__name} ({self.__id}): {self.get_quantity} items @ ${self.__price} each"
 
     def __repr__(self) -> str:
-        pass
+        return f"Product({self.__quantity}, {self.__price}, '{self.__name}', {self.__id})"
 
 #-------------------------------------------------------------------------------
 
