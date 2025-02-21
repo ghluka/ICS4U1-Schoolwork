@@ -1,3 +1,5 @@
+"""Provides solutions for the 2 classes in task 1's assignment
+"""
 import random
 from typing import Self
 
@@ -82,97 +84,97 @@ class Inventory(object):
         Returns the average quantity per Product in the Inventory.
         If the Inventory is empty, this should return 0.0.
         """
-        pass
+        raise NotImplementedError
 
     def qty_of_most_expensive(self) -> int:
         """
         Returns the quantity of the most expensive Product in the Inventory.
         If the Inventory is empty, this should return 0.
         """
-        pass
+        raise NotImplementedError
 
     def total_inventory_value(self) -> float:
         """Returns the total monetary value of all items in the Inventory."""
-        pass
+        raise NotImplementedError
 
     def most_valuable_product(self) -> Product|None:
         """
         Returns the Productthat represents the most total monetary value in the Inventory.
         If the Inventory is empty, this returns None.
         """
-        pass
+        raise NotImplementedError
 
     def avg_price_per_item(self) -> float:
         """
         Returns the unrounded average price per single inventory item.
         If the Inventory is empty, this should return 0.0.
         """
-        pass
+        raise NotImplementedError
 
     def median_price_per_product(self) -> float:
         """Returns the median price of all Products in the Inventory."""
-        pass
+        raise NotImplementedError
 
     def pretty_inventory(self) -> str:
         """Returns a large string showing all Products in the Inventory."""
-        pass
+        raise NotImplementedError
 
     def products_in_price_range(self, end1:float, end2:float) -> list:
         """
         Returns a list of references to Products in the Inventory that have a
         price between the two boundaries.
         """
-        pass
+        raise NotImplementedError
 
     def add_product(self, new_product:Product) -> None:
         """Adds the given Product argument to the Inventory."""
-        pass
+        raise NotImplementedError
 
     def get_product(self, id_num:int) -> Product|None:
         """
         Returns a reference to the Product in the Inventory that has the given
         id number.
         """
-        pass
+        raise NotImplementedError
 
     def search_products(self, substring:str) -> list[Product]:
         """
         Returns a list of references to Products in the Inventory whose names
         contain the given substring.
         """
-        pass
+        raise NotImplementedError
 
     def find_low_stock(self, threshold:int) -> list[Product]:
         """
         Returns a list of references to Products in the Inventory whose quantities
         are below or equal to the given threshold.
         """
-        pass
+        raise NotImplementedError
 
     def products_by_price(self) -> list[Product]:
         """
         Returns a list of references to Products in the Inventory ordered from
         lowest price to highest price.
         """
-        pass
+        raise NotImplementedError
 
     def is_product_available(self, quantity:int, id_num:int) -> bool:
         """
         Returns a boolean True or False based on if the Product in the Inventory
         with the given id has the specified quantity available in the Inventory.
         """
-        pass
+        raise NotImplementedError
 
     def sell_product(self, quantity:int, id_num:int) -> bool:
         """
         Returns boolean True or False based on the success of the attempt to sell
         the given quantity of the Product in the Inventory with the given id.
         """
-        pass
+        raise NotImplementedError
 
     def export_to_csv(self, filename:str) -> None:
         """Writes the entire Inventory of Products to a text based CSV file."""
-        pass
+        raise NotImplementedError
 
     def consolidate(self) -> None:
         """
@@ -183,7 +185,7 @@ class Inventory(object):
         the smaller id number will absorb all the quantities, and the other Product(s)
         will be fully removed from the Inventory.
         """
-        pass
+        raise NotImplementedError
 
 #----===  TESTING CODE ===------------------------------------------------------
 if __name__ == "__main__":
