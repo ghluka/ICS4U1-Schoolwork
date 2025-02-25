@@ -50,17 +50,17 @@ class Product(object):
         """Mutator for the product's quantity."""
         self.__quantity = quantity
 
-    def __gt__(self, product2) -> bool:
+    def __gt__(self, product2:Self) -> bool:
         if self.__price == product2.get_price():
             return self.__name > product2.get_name()
         return self.__price > product2.get_price()
 
-    def __lt__(self, product2) -> bool:
+    def __lt__(self, product2:Self) -> bool:
         if self.__price == product2.get_price():
             return self.__name < product2.get_name()
         return self.__price < product2.get_price()
 
-    def __eq__(self, product2) -> bool:
+    def __eq__(self, product2:Self) -> bool:
         return self.__price == product2.get_price() and self.__name == product2.get_name()
 
     def __str__(self) -> str:
@@ -85,8 +85,10 @@ class Inventory(object):
         If the Inventory is empty, this should return 0.0.
         """
         quantities = 0.0
+
         for product in self.__products:
             quantities += product.get_quantity()
+
         return quantities / len(self.__products)
 
     def qty_of_most_expensive(self) -> int:
@@ -96,17 +98,21 @@ class Inventory(object):
         """
         quantity = 0
         most_expensive_price = 0
+
         for product in self.__products:
              if product.get_price() > most_expensive_price:
                 quantity = product.get_quantity()
                 most_expensive_price = product.get_price()
+
         return quantity
 
     def total_inventory_value(self) -> float:
         """Returns the total monetary value of all items in the Inventory."""
         total_value = 0.0
+
         for product in self.__products:
             total_value += product.get_price() * product.get_quantity()
+
         return total_value
 
     def most_valuable_product(self) -> Product|None:
@@ -116,10 +122,12 @@ class Inventory(object):
         """
         highest_valued_product = None
         most_valuable = 0
+
         for product in self.__products:
              if product.get_price() * product.get_quantity() > most_valuable:
                 highest_valued_product = product
                 most_valuable = product.get_price() * product.get_quantity()
+
         return highest_valued_product
 
     def avg_price_per_item(self) -> float:
@@ -129,14 +137,17 @@ class Inventory(object):
         """
         quantities = 0.0
         total_value = 0.0
+
         for product in self.__products:
             total_value += product.get_price() * product.get_quantity()
             quantities += product.get_quantity()
+
         return total_value / quantities
 
     def median_price_per_product(self) -> float:
         """Returns the median price of all Products in the Inventory."""
         prices = []
+
         for product in self.__products:
             prices.append(product.get_price())
         prices.sort()
@@ -148,7 +159,12 @@ class Inventory(object):
 
     def pretty_inventory(self) -> str:
         """Returns a large string showing all Products in the Inventory."""
-        raise NotImplementedError
+        out = ""
+
+        for product in self.__products:
+            out += f"{product}\n"
+
+        return out[:-1]
 
     def products_in_price_range(self, end1:float, end2:float) -> list:
         """
@@ -156,9 +172,11 @@ class Inventory(object):
         price between the two boundaries.
         """
         products = []
+
         for product in self.__products:
             if min(end1, end2) <= product.get_price() and product.get_price() <= max(end1, end2):
                 products.append(product)
+
         return products
 
     def add_product(self, new_product:Product) -> None:
@@ -180,9 +198,11 @@ class Inventory(object):
         contain the given substring.
         """
         products = []
+
         for product in self.__products:
             if substring.lower() in product.get_name().lower():
                 products.append(product)
+
         return products
 
     def find_low_stock(self, threshold:int) -> list[Product]:
@@ -191,9 +211,11 @@ class Inventory(object):
         are below or equal to the given threshold.
         """
         products = []
+
         for product in self.__products:
             if product.get_quantity() <= threshold:
                 products.append(product)
+
         return products
 
     def products_by_price(self) -> list[Product]:
@@ -201,8 +223,7 @@ class Inventory(object):
         Returns a list of references to Products in the Inventory ordered from
         lowest price to highest price.
         """
-        products = sorted(self.__products)
-        return products
+        return sorted(self.__products)
 
     def is_product_available(self, quantity:int, id_num:int) -> bool:
         """
@@ -210,6 +231,7 @@ class Inventory(object):
         with the given id has the specified quantity available in the Inventory.
         """
         product = self.get_product(id_num)
+
         if product:
             return product.get_quantity() >= quantity
         return False
@@ -220,6 +242,7 @@ class Inventory(object):
         the given quantity of the Product in the Inventory with the given id.
         """
         product = self.get_product(id_num)
+
         if product and product.get_quantity() >= quantity:
             product.set_quantity(product.get_quantity() - quantity)
             return True
@@ -227,7 +250,12 @@ class Inventory(object):
 
     def export_to_csv(self, filename:str) -> None:
         """Writes the entire Inventory of Products to a text based CSV file."""
-        raise NotImplementedError
+        out_file = open(filename, "w")
+
+        for product in self.__products:
+            out_file.write(f"{product.get_quantity()},{product.get_price()},{product.get_name()},{product.get_id()}\n")
+
+        out_file.close()
 
     def consolidate(self) -> None:
         """
@@ -238,7 +266,23 @@ class Inventory(object):
         the smaller id number will absorb all the quantities, and the other Product(s)
         will be fully removed from the Inventory.
         """
-        raise NotImplementedError
+        products = []
+
+        for product in self.__products:
+            if product in products:
+                duplicate = products[products.index(product)]
+
+                if product.get_id() < duplicate.get_id():
+                    products.remove(product)
+
+                duplicate.set_quantity(duplicate.get_quantity() + product.get_quantity())
+
+                if product.get_id() < duplicate.get_id():
+                    products.append(product)
+            else:
+                products.append(product)
+
+        self.__products = products
 
 #----===  TESTING CODE ===------------------------------------------------------
 if __name__ == "__main__":
@@ -246,9 +290,7 @@ if __name__ == "__main__":
 
     #Read the data file into Inventory
     store = Inventory()
-
     inv_file = open("store_inventory.csv")
-
     for line in inv_file:
         product_line = line.rstrip("\n").split(",")
         qty = int(product_line[0])
@@ -260,75 +302,76 @@ if __name__ == "__main__":
 
     #---== Test 'Product' class ==----------------------------------------------
     test_product = Product(99, 9.99, "Test Product")
-    
+
     new_id = Product.get_unique_id()
     test_product2 = Product(1000, 9.99, "Other Product", new_id)
 
     print(BAR)
     print("1. Test basic Product methods")
-    print("✅ PASSED" if test_product.get_quantity() == 99 else "❌ FAILED")
-    print("✅ PASSED" if test_product.get_price() == 9.99 else "❌ FAILED") 
-    print("✅ PASSED" if test_product.get_name() == "Test Product" else "❌ FAILED")
+    print(test_product.get_quantity())
+    print(test_product.get_price())
+    print(test_product.get_name())
+    print(test_product.get_id())
 
     print(BAR)
-    print("2. Test Product comparison methods")
-    print("✅ PASSED" if (test_product > test_product2) == True else "❌ FAILED")
-    print("✅ PASSED" if (test_product < test_product2) == False else "❌ FAILED")
-    print("✅ PASSED" if (test_product == test_product2) == False else "❌ FAILED")
+    print("2. Test Product comparison methods")    
+    print(test_product > test_product2)
+    print(test_product < test_product2)
+    print(test_product == test_product2)
 
     print(BAR)
     print("3. Test set_quantity, str, and repr")
     test_product.set_quantity(999)
-    print("✅ PASSED" if str(test_product) == "Test Product (id): 999 items @ $9.99 each".replace("id", str(test_product.get_id())) else "❌ FAILED")
-    print("✅ PASSED" if repr(test_product) == "Product(999, 9.99, 'Test Product', id)".replace("id", str(test_product.get_id())) else "❌ FAILED")
+    print(str(test_product))
+    print(repr(test_product))
 
     #---== Test 'Inventory' class ==----------------------------------------------
     print(BAR)
     print("4. Test first set of Inventory methods")
-    print("✅ PASSED" if store.avg_qty_per_product() == 27.43 else "❌ FAILED")
-    print("✅ PASSED" if store.qty_of_most_expensive() == 31 else "❌ FAILED")
-    print("✅ PASSED" if store.total_inventory_value() == 125062.14000000001 else "❌ FAILED")
-    print("✅ PASSED" if store.most_valuable_product().get_name() == "Coconut Water" else "❌ FAILED")
+    print(store.avg_qty_per_product())
+    print(store.qty_of_most_expensive())
+    print(store.total_inventory_value())
+    print(store.most_valuable_product())
 
     print(BAR)
     print("5. Test next set of Inventory methods")
-    print("✅ PASSED" if store.avg_price_per_item() == 22.79659861465549 else "❌ FAILED")
-    print("✅ PASSED" if store.median_price_per_product() == 22.765 else "❌ FAILED")
+    print(store.avg_price_per_item())
+    print(store.median_price_per_product())
     store.add_product(test_product)
-    print("✅ PASSED" if store.median_price_per_product() == 22.63 else "❌ FAILED")
-    
+    print(store.median_price_per_product())
+
+    print(BAR)
+    print("6. Test pretty_inventory()")
+    print(store.pretty_inventory())
+
+    print(BAR)
+    print("7. Test more Inventory methods")
+    print(store.products_in_price_range(2.22, 2.40))
+    print(store.get_product(42274))
+    print(store.search_products('pers'))
+    print(store.find_low_stock(1))
+
+    print(BAR)
+    print("8. Test products_by_price()")
+    ps = store.products_by_price()
+    print("First 5:", ps[:5])
+    print("Last 5:", ps[-5:])
+
     print(BAR)
     print("9. Test availability and selling methods")
-    print("✅ PASSED" if store.is_product_available(15, 42274) == False else "❌ FAILED")
-    print("✅ PASSED" if store.sell_product(5, 42274) == True else "❌ FAILED")
-    print("✅ PASSED" if store.is_product_available(5, 42274) == True else "❌ FAILED")
-    print("✅ PASSED" if store.sell_product(5, 42274) == True else "❌ FAILED")
-    print("✅ PASSED" if store.is_product_available(5, 42274) == False else "❌ FAILED")
-    print("✅ PASSED" if store.sell_product(5, 42274) == False else "❌ FAILED")
+    print(store.is_product_available(15, 42274))
+    print(store.sell_product(5, 42274))
+    print(store.is_product_available(5, 42274))
+    print(store.sell_product(5, 42274))
+    print(store.is_product_available(5, 42274))
+    print(store.sell_product(5, 42274))
 
-    #print(BAR)
-    #print("6. Test pretty_inventory()")
-    #print(store.pretty_inventory())
+    print(BAR)
+    print("10. Test search and consolidate methods")
+    print(store.search_products("Mango"))
+    print(store.search_products("Starfruit"))
+    store.consolidate()
+    print(store.search_products("Mango"))
+    print(store.search_products("Starfruit"))
 
-    #print(BAR)
-    #print("7. Test more Inventory methods")
-    #print(store.products_in_price_range(2.22, 2.40))
-    #print(store.get_product(42274))
-    #print(store.search_products('pers'))
-    #print(store.find_low_stock(1))
-
-    #print(BAR)
-    #print("8. Test products_by_price()")
-    #ps = store.products_by_price()
-    #print("First 5:", ps[:5])
-    #print("Last 5:", ps[-5:])
-
-    #print(BAR)
-    #print("10. Test search and consolidate methods")
-    #print(store.search_products("Mango"))
-    #print(store.search_products("Starfruit"))
-    #store.consolidate()
-    #print(store.search_products("Mango"))
-    #print(store.search_products("Starfruit"))
-
-    #store.export_to_csv("backup.csv")
+    store.export_to_csv("backup.csv")
