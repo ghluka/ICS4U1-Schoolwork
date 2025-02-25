@@ -10,9 +10,10 @@ from typing import Self
 class Product(object):
     """A class that models a product with a quantity, price, name, and numerical identifier."""
 
-    __ids = []
+    __ids:list[int] = []
     
-    def get_unique_id() -> int:
+    @classmethod
+    def get_unique_id(cls) -> int:
         """Returns a unique 5-digit integer ID."""
         id = random.randrange(10_000, 100_000)
         while id in Product.__ids:
@@ -21,8 +22,8 @@ class Product(object):
         Product.__ids.append(id)
         return id
 
-    def __init__(self, quantity:int, price:float, name:str, id:int=None):
-        if not id:
+    def __init__(self, quantity: int, price: float, name: str, id: int = -1):
+        if id == -1:
             id = Product.get_unique_id()
 
         self.__quantity = quantity
@@ -30,15 +31,15 @@ class Product(object):
         self.__name = name
         self.__id = id
 
-    def get_name(self) -> int:
+    def get_name(self) -> str:
         """Accessor for the product's name."""
         return self.__name
 
-    def get_quantity(self) -> float:
+    def get_quantity(self) -> int:
         """Accessor for the product's quantity."""
         return self.__quantity
 
-    def get_price(self) -> str:
+    def get_price(self) -> float:
         """Accessor for the product's price."""
         return self.__price
 
@@ -46,25 +47,25 @@ class Product(object):
         """Accessor for the product's id."""
         return self.__id
 
-    def set_quantity(self, quantity:int) -> None:
+    def set_quantity(self, quantity: int) -> None:
         """Mutator for the product's quantity."""
         self.__quantity = quantity
 
-    def __gt__(self, product2:Self) -> bool:
+    def __gt__(self, product2: Self) -> bool:
         if self.__price == product2.get_price():
             return self.__name > product2.get_name()
         return self.__price > product2.get_price()
 
-    def __lt__(self, product2:Self) -> bool:
+    def __lt__(self, product2: Self) -> bool:
         if self.__price == product2.get_price():
             return self.__name < product2.get_name()
         return self.__price < product2.get_price()
 
-    def __eq__(self, product2:Self) -> bool:
+    def __eq__(self, product2: Self) -> bool:
         return self.__price == product2.get_price() and self.__name == product2.get_name()
 
     def __str__(self) -> str:
-        return f"{self.__name} ({self.__id}): {self.__quantity} items @ ${self.__price} each"
+        return f"{self.__name} ({self.__id}):  {self.__quantity} items @ ${self.__price} each"
 
     def __repr__(self) -> str:
         return f"Product({self.__quantity}, {self.__price}, '{self.__name}', {self.__id})"
@@ -164,9 +165,9 @@ class Inventory(object):
         for product in self.__products:
             out += f"{product}\n"
 
-        return out[:-1]
+        return out[: -1]
 
-    def products_in_price_range(self, end1:float, end2:float) -> list:
+    def products_in_price_range(self, end1: float, end2: float) -> list:
         """
         Returns a list of references to Products in the Inventory that have a
         price between the two boundaries.
@@ -179,11 +180,11 @@ class Inventory(object):
 
         return products
 
-    def add_product(self, new_product:Product) -> None:
+    def add_product(self, new_product: Product) -> None:
         """Adds the given Product argument to the Inventory."""
         self.__products.append(new_product)
 
-    def get_product(self, id_num:int) -> Product|None:
+    def get_product(self, id_num: int) -> Product|None:
         """
         Returns a reference to the Product in the Inventory that has the given
         id number.
@@ -191,8 +192,9 @@ class Inventory(object):
         for product in self.__products:
             if product.get_id() == id_num:
                 return product
+        return None
 
-    def search_products(self, substring:str) -> list[Product]:
+    def search_products(self, substring: str) -> list[Product]:
         """
         Returns a list of references to Products in the Inventory whose names
         contain the given substring.
@@ -205,7 +207,7 @@ class Inventory(object):
 
         return products
 
-    def find_low_stock(self, threshold:int) -> list[Product]:
+    def find_low_stock(self, threshold: int) -> list[Product]:
         """
         Returns a list of references to Products in the Inventory whose quantities
         are below or equal to the given threshold.
@@ -225,7 +227,7 @@ class Inventory(object):
         """
         return sorted(self.__products)
 
-    def is_product_available(self, quantity:int, id_num:int) -> bool:
+    def is_product_available(self, quantity: int, id_num: int) -> bool:
         """
         Returns a boolean True or False based on if the Product in the Inventory
         with the given id has the specified quantity available in the Inventory.
@@ -236,7 +238,7 @@ class Inventory(object):
             return product.get_quantity() >= quantity
         return False
 
-    def sell_product(self, quantity:int, id_num:int) -> bool:
+    def sell_product(self, quantity: int, id_num: int) -> bool:
         """
         Returns boolean True or False based on the success of the attempt to sell
         the given quantity of the Product in the Inventory with the given id.
@@ -248,7 +250,7 @@ class Inventory(object):
             return True
         return False
 
-    def export_to_csv(self, filename:str) -> None:
+    def export_to_csv(self, filename: str) -> None:
         """Writes the entire Inventory of Products to a text based CSV file."""
         out_file = open(filename, "w")
 
@@ -266,7 +268,7 @@ class Inventory(object):
         the smaller id number will absorb all the quantities, and the other Product(s)
         will be fully removed from the Inventory.
         """
-        products = []
+        products:list[Product] = []
 
         for product in self.__products:
             if product in products:
@@ -354,8 +356,8 @@ if __name__ == "__main__":
     print(BAR)
     print("8. Test products_by_price()")
     ps = store.products_by_price()
-    print("First 5:", ps[:5])
-    print("Last 5:", ps[-5:])
+    print("First 5: ", ps[: 5])
+    print("Last 5: ", ps[-5: ])
 
     print(BAR)
     print("9. Test availability and selling methods")
