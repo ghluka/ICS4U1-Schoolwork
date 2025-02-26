@@ -48,8 +48,9 @@ class Product(object):
         return self.__id
 
     def set_quantity(self, quantity: int) -> None:
-        """Mutator for the product's quantity."""
-        self.__quantity = quantity
+        """Mutator for the product's quantity. Doesn't allow for negative quantities."""
+        if quantity >= 0:
+            self.__quantity = quantity
 
     def __gt__(self, product2: Self) -> bool:
         if self.__price == product2.get_price():
@@ -165,7 +166,7 @@ class Inventory(object):
         for product in self.__products:
             out += f"{product}\n"
 
-        return out[: -1]
+        return out[:-1]
 
     def products_in_price_range(self, end1: float, end2: float) -> list:
         """
@@ -356,8 +357,8 @@ if __name__ == "__main__":
     print(BAR)
     print("8. Test products_by_price()")
     ps = store.products_by_price()
-    print("First 5: ", ps[: 5])
-    print("Last 5: ", ps[-5: ])
+    print("First 5: ", ps[:5])
+    print("Last 5: ", ps[-5:])
 
     print(BAR)
     print("9. Test availability and selling methods")
