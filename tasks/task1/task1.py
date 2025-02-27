@@ -1,17 +1,17 @@
 """Provides solutions for the 2 classes in task 1's assignment
 """
+
 import random
 from typing import Self
 
-#-------------------------------------------------------------------------------
+BAR = f"\n{'-'*80}"
 
-# Put your Product class here
 
 class Product(object):
     """A class that models a product with a quantity, price, name, and numerical identifier."""
 
     __ids:list[int] = []
-    
+
     @classmethod
     def get_unique_id(cls) -> int:
         """Returns a unique 5-digit integer ID."""
@@ -23,6 +23,7 @@ class Product(object):
         return id
 
     def __init__(self, quantity: int, price: float, name: str, id: int = -1):
+        """Initializes the Product class with a given quantity, price, name, and numeric identifier."""
         if id == -1:
             id = Product.get_unique_id()
 
@@ -53,37 +54,53 @@ class Product(object):
             self.__quantity = quantity
 
     def __gt__(self, product2: Self) -> bool:
+        """Compares two Product classes.
+        Returns a bool stating if self's prices are greater than product2's.
+        If both prices are the same it returns if self's name is greater than product2's. 
+        """
         if self.__price == product2.get_price():
             return self.__name > product2.get_name()
         return self.__price > product2.get_price()
 
     def __lt__(self, product2: Self) -> bool:
+        """Compares two Product classes.
+        Returns a bool stating if self's prices are lower than product2's.
+        If both prices are the same it returns if self's name is lower than product2's. 
+        """
         if self.__price == product2.get_price():
             return self.__name < product2.get_name()
         return self.__price < product2.get_price()
 
-    def __eq__(self, product2: Self) -> bool:
+    def __eq__(self, product2: object) -> bool:
+        """Compares two Product classes.
+        Returns a bool stating if self's name and price is the same as product2's.
+        """
+        if not isinstance(product2, Product):
+            return NotImplemented
         return self.__price == product2.get_price() and self.__name == product2.get_name()
 
     def __str__(self) -> str:
+        """Returns a string containing information about the class in the specified format:
+        {name} ({id}):  {quantity} items @ ${price} each
+        """
         return f"{self.__name} ({self.__id}):  {self.__quantity} items @ ${self.__price} each"
 
     def __repr__(self) -> str:
+        """Returns a string containing information about the class in the specified format:
+        Product({quantity}, {price}, '{name}', {id})
+        """
         return f"Product({self.__quantity}, {self.__price}, '{self.__name}', {self.__id})"
 
-#-------------------------------------------------------------------------------
-
-# Put your Inventory class here
 
 class Inventory(object):
     """A class that models product inventory with a list of products."""
 
     def __init__(self):
+        """Initializes the Inventory class with no given parameters."""
         self.__products = []
 
     def avg_qty_per_product(self) -> float:
-        """
-        Returns the average quantity per Product in the Inventory.
+        """Returns the average quantity per Product in the Inventory.
         If the Inventory is empty, this should return 0.0.
         """
         quantities = 0.0
@@ -94,8 +111,7 @@ class Inventory(object):
         return quantities / len(self.__products)
 
     def qty_of_most_expensive(self) -> int:
-        """
-        Returns the quantity of the most expensive Product in the Inventory.
+        """Returns the quantity of the most expensive Product in the Inventory.
         If the Inventory is empty, this should return 0.
         """
         quantity = 0
@@ -118,8 +134,7 @@ class Inventory(object):
         return total_value
 
     def most_valuable_product(self) -> Product|None:
-        """
-        Returns the Product that represents the most total monetary value in the Inventory.
+        """Returns the Product that represents the most total monetary value in the Inventory.
         If the Inventory is empty, this returns None.
         """
         highest_valued_product = None
@@ -133,8 +148,7 @@ class Inventory(object):
         return highest_valued_product
 
     def avg_price_per_item(self) -> float:
-        """
-        Returns the unrounded average price per single inventory item.
+        """Returns the unrounded average price per single inventory item.
         If the Inventory is empty, this should return 0.0.
         """
         quantities = 0.0
@@ -169,8 +183,7 @@ class Inventory(object):
         return out[:-1]
 
     def products_in_price_range(self, end1: float, end2: float) -> list:
-        """
-        Returns a list of references to Products in the Inventory that have a
+        """Returns a list of references to Products in the Inventory that have a
         price between the two boundaries.
         """
         products = []
@@ -186,18 +199,17 @@ class Inventory(object):
         self.__products.append(new_product)
 
     def get_product(self, id_num: int) -> Product|None:
-        """
-        Returns a reference to the Product in the Inventory that has the given
+        """Returns a reference to the Product in the Inventory that has the given
         id number.
         """
         for product in self.__products:
             if product.get_id() == id_num:
                 return product
+
         return None
 
     def search_products(self, substring: str) -> list[Product]:
-        """
-        Returns a list of references to Products in the Inventory whose names
+        """Returns a list of references to Products in the Inventory whose names
         contain the given substring.
         """
         products = []
@@ -209,8 +221,7 @@ class Inventory(object):
         return products
 
     def find_low_stock(self, threshold: int) -> list[Product]:
-        """
-        Returns a list of references to Products in the Inventory whose quantities
+        """Returns a list of references to Products in the Inventory whose quantities
         are below or equal to the given threshold.
         """
         products = []
@@ -222,15 +233,13 @@ class Inventory(object):
         return products
 
     def products_by_price(self) -> list[Product]:
-        """
-        Returns a list of references to Products in the Inventory ordered from
+        """Returns a list of references to Products in the Inventory ordered from
         lowest price to highest price.
         """
         return sorted(self.__products)
 
     def is_product_available(self, quantity: int, id_num: int) -> bool:
-        """
-        Returns a boolean True or False based on if the Product in the Inventory
+        """Returns a boolean True or False based on if the Product in the Inventory
         with the given id has the specified quantity available in the Inventory.
         """
         product = self.get_product(id_num)
@@ -240,8 +249,7 @@ class Inventory(object):
         return False
 
     def sell_product(self, quantity: int, id_num: int) -> bool:
-        """
-        Returns boolean True or False based on the success of the attempt to sell
+        """Returns boolean True or False based on the success of the attempt to sell
         the given quantity of the Product in the Inventory with the given id.
         """
         product = self.get_product(id_num)
@@ -261,8 +269,7 @@ class Inventory(object):
         out_file.close()
 
     def consolidate(self) -> None:
-        """
-        Reduces the number of Products in the Inventory by combining any that
+        """Reduces the number of Products in the Inventory by combining any that
         appear to be duplicates.
         
         If multiple Products have the same name and price, the Product that has
@@ -275,22 +282,19 @@ class Inventory(object):
             if product in products:
                 duplicate = products[products.index(product)]
 
-                if product.get_id() < duplicate.get_id():
-                    products.remove(product)
-
                 duplicate.set_quantity(duplicate.get_quantity() + product.get_quantity())
 
+                # if current product has lower id than duplicate, remove duplicate from list and add current product to list
                 if product.get_id() < duplicate.get_id():
+                    products.remove(product)
+                    product.set_quantity(duplicate.get_quantity())
                     products.append(product)
             else:
                 products.append(product)
 
         self.__products = products
 
-#----===  TESTING CODE ===------------------------------------------------------
 if __name__ == "__main__":
-    BAR = f"\n{'-'*80}"
-
     #Read the data file into Inventory
     store = Inventory()
     inv_file = open("store_inventory.csv")

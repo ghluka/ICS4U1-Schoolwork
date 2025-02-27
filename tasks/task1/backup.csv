@@ -95,7 +95,7 @@
 36,44.31,Granola,25964
 25,22.9,Whole Grain Bread,49089
 16,41.68,Beets,78095
-72,6.11,Starfruit,35844
+81,6.11,Starfruit,35844
 35,2.7,Peanut Butter,27135
 43,41.8,Almond Butter,69350
 19,1.72,Ground Beef,60619
@@ -178,7 +178,7 @@
 44,12.97,Vanilla Extract,30948
 31,29.38,Cilantro,49678
 2,29.5,Pomegranate,86997
-1,30.0,Mango,15900
+38,30.0,Mango,15900
 5,27.83,Whole Wheat Flour,90343
 28,36.27,Milk,92291
 42,30.19,Watercress,31584
@@ -191,4 +191,4 @@
 19,29.37,Scallions,71682
 32,45.54,Sliced Ham,77001
 23,7.62,Basil,29110
-999,9.99,Test Product,39134
+999,9.99,Test Product,10668
