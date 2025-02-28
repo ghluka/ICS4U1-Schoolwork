@@ -83,7 +83,7 @@ class Product(object):
         """Returns a string containing information about the class in the specified format:
         {name} ({id}):  {quantity} items @ ${price} each
         """
-        return f"{self.__name} ({self.__id}):  {self.__quantity} items @ ${self.__price} each"
+        return f"{self.__name} ({self.__id}): {self.__quantity} items @ ${self.__price} each"
 
     def __repr__(self) -> str:
         """Returns a string containing information about the class in the specified format:
@@ -103,11 +103,13 @@ class Inventory(object):
         """Returns the average quantity per Product in the Inventory.
         If the Inventory is empty, this should return 0.0.
         """
-        quantities = 0.0
+        quantities = 0
 
         for product in self.__products:
             quantities += product.get_quantity()
 
+        if len(self.__products) == 0:
+            return 0.0
         return quantities / len(self.__products)
 
     def qty_of_most_expensive(self) -> int:
@@ -151,26 +153,31 @@ class Inventory(object):
         """Returns the unrounded average price per single inventory item.
         If the Inventory is empty, this should return 0.0.
         """
-        quantities = 0.0
-        total_value = 0.0
+        quantities = 0
+        total_value = 0
 
         for product in self.__products:
             total_value += product.get_price() * product.get_quantity()
             quantities += product.get_quantity()
 
+        if quantities == 0:
+            return 0.0
         return total_value / quantities
 
     def median_price_per_product(self) -> float:
         """Returns the median price of all Products in the Inventory."""
         prices = []
 
+        # store list of prices, sort
         for product in self.__products:
             prices.append(product.get_price())
         prices.sort()
 
-        if len(prices) % 2 == 1:
+        if len(prices) == 0: # if no prices, return 0.0
+            return 0.0
+        elif len(prices) % 2 == 1: # if odd number of prices, return middle price
             return prices[len(prices) // 2]
-        else:
+        else: # if even number of prices, return average of the two middle prices
             return (prices[len(prices) // 2 - 1] + prices[len(prices) // 2]) / 2
 
     def pretty_inventory(self) -> str:
@@ -184,11 +191,12 @@ class Inventory(object):
 
     def products_in_price_range(self, end1: float, end2: float) -> list:
         """Returns a list of references to Products in the Inventory that have a
-        price between the two boundaries.
+        price between (inclusive) the two boundaries.
         """
         products = []
 
         for product in self.__products:
+            # if price is bigger than or equal to the minimum of the range, or price is smaller than or equal to the price, add to list of products
             if min(end1, end2) <= product.get_price() and product.get_price() <= max(end1, end2):
                 products.append(product)
 
@@ -276,22 +284,26 @@ class Inventory(object):
         the smaller id number will absorb all the quantities, and the other Product(s)
         will be fully removed from the Inventory.
         """
+        # create new list for inventory to keep all the consolidated products 
         products:list[Product] = []
 
         for product in self.__products:
+            # check if theres a duplicate to consolidate
             if product in products:
                 duplicate = products[products.index(product)]
 
+                # absorb quantity
                 duplicate.set_quantity(duplicate.get_quantity() + product.get_quantity())
 
                 # if current product has lower id than duplicate, remove duplicate from list and add current product to list
                 if product.get_id() < duplicate.get_id():
                     products.remove(product)
-                    product.set_quantity(duplicate.get_quantity())
+                    product.set_quantity(duplicate.get_quantity()) # absorb quantity
                     products.append(product)
             else:
-                products.append(product)
+                products.append(product) # add product with no dupes to the products list
 
+        # replace old list with the new one
         self.__products = products
 
 if __name__ == "__main__":
