@@ -8,17 +8,25 @@ Due to the nature of the course, we can only use the knowledge taught (see the b
 
 - ### 💪 Warmups
 
-The `warmups` directory contains all solutions to problems given by the teacher to solve. These aren't worth marks but to practice our skills learned in class.
+The [`warmups`](/warmups) directory contains all solutions to problems given by the teacher to solve. These aren't worth marks but to practice our skills learned in class.
 
 - ### 🏋️ Exercises
 
-The `exercises` directory contains all warmups that were to be optionally submitted to the teacher for feedback.
+The [`exercises`](/exercises) directory contains all warmups that were to be optionally submitted to the teacher for feedback.
 
 - ### 📜 Tasks
 
-The `tasks` directory contains all evaluations worth marks that were done online. 
+The [`tasks`](/tasks) directory contains all evaluations worth marks that were done online. 
 
 These did not include tests as those were done on paper.
+
+- ### 🔨 Utils
+
+The [`utils`](/utils) directory contains all teacher provided utility files, such as [`images.py`](/utils/images.py).
+
+- ### 📷 Data
+
+The [`data`](/data) directory contains all the frequently used data, such as [`images`](/data/images).
 
 - #### 🧪 Testers
 
@@ -34,6 +42,10 @@ Units are referred to as blocks in this course.
 
 All the different blocks and their respective concepts learned.
 
-- [x] 1. To be added
+- [x] 1. Review & Classes
 
-    Concepts learned: To be added
+    Concepts learned: Classes, inheritance, private variables, static variables
+
+- [ ] 2. Images
+
+    Concepts learned: Pixels
