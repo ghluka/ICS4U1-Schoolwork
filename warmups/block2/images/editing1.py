@@ -5,7 +5,7 @@ import sys
 # note to self: do not submit assignments with this "import" hack, it's just to get utils working
 sys.path[0] = os.getcwd()
 
-from utils.images import Image, Image_File
+from utils.images import Image, Image_File, Image_Sequence
 
 
 def reduce(img:Image, color_component:str) -> Image:
@@ -68,6 +68,29 @@ def negative(img:Image) -> Image:
 
     return img
 
+
+def mirror(img:Image) -> Image:
+    """Returns a new Image that results from reflecting the
+    top half of an image across its horizontal mid-line.
+    """
+    return mirror_sequence(img).get_frame(img.get_height() // 2 + 1)
+
+
+def mirror_sequence(img:Image) -> Image_Sequence:
+    """Returns an Image_Sequence object that contains the
+    resulting Images from reflecting the top half of an image
+    across its horizontal mid-line, one row at a time.
+    """
+    img = img.copy()
+    img_sequence = Image_Sequence()
+
+    for row in range(img.get_height() // 2, img.get_height()):
+        for col in range(0, img.get_width()):
+            img.set_pixel(col, row, img.get_pixel(col, img.get_height() - row))
+        img_sequence.add_image(img.copy())
+
+    return img_sequence
+
 if __name__ == "__main__":
     sample = Image_File("data/images/lorikeet.bmp")
 
@@ -80,8 +103,8 @@ if __name__ == "__main__":
     neg_image = negative(sample)
     neg_image.show()
 
-    #mirrored_image = mirror(sample)
-    #mirrored_image.show()
+    mirrored_image = mirror(sample)
+    mirrored_image.show()
 
-    #mirror_seq = mirror_sequence(sample)
-    #mirror_seq.play(20)
+    mirror_seq = mirror_sequence(sample)
+    mirror_seq.play(20)
