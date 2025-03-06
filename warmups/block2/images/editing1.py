@@ -73,7 +73,13 @@ def mirror(img:Image) -> Image:
     """Returns a new Image that results from reflecting the
     top half of an image across its horizontal mid-line.
     """
-    return mirror_sequence(img).get_frame(img.get_height() // 2 + 1)
+    img = img.copy()
+
+    for row in range(img.get_height() // 2, img.get_height()):
+        for col in range(0, img.get_width()):
+            img.set_pixel(col, row, img.get_pixel(col, img.get_height() - row))
+
+    return img
 
 
 def mirror_sequence(img:Image) -> Image_Sequence:
