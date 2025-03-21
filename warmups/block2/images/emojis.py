@@ -12,7 +12,7 @@ from utils.images import WHITE, Image, Image_File, Image_New, Image_Sequence
 def emojis(emoji1: Image, emoji2: Image, width: int, height: int, n: int) -> Image:
     img = Image_New(width, height)
 
-    for i in range(n):
+    for _ in range(n):
         ran_x = random.randrange(0, width)
         ran_y = random.randrange(0, height)
 
@@ -34,7 +34,7 @@ def emoji_seq(emoji1: Image, emoji2: Image, width: int, height: int, n: int) -> 
     seq = Image_Sequence()
     img = Image_New(width, height)
 
-    for i in range(n):
+    for _ in range(n):
         ran_x = random.randrange(0, width)
         ran_y = random.randrange(0, height)
 
