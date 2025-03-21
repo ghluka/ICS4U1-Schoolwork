@@ -5,7 +5,7 @@ import sys
 # note to self: do not submit assignments with this "import" hack, it's just to get utils working
 sys.path[0] = os.getcwd()
 
-from utils.images import Image, Image_File, Image_Sequence
+from utils.images import Image, Image_File, Image_Sequence, clean_up
 
 
 def neon(img: Image) -> Image:
@@ -65,24 +65,24 @@ if __name__ == "__main__":
     w.show()
 
     #x = x_box(255)
-    #x.save("x_box_255.bmp")
+    ##x.save("x_box_255.bmp")
     #x.show()
 
     #x = x_box(200)
-    #x.save("x_box_200.bmp")
+    ##x.save("x_box_200.bmp")
     #x.show()
 
 
     #s = slide(im, 140)
-    #s.save("slide_140.bmp")
+    ##s.save("slide_140.bmp")
     #s.show()
 
 
-    #im.show() #<-- shows the original image was unchanged
+    im.show() #<-- shows the original image was unchanged
 
     #ss = slide_sequence(im, 140)
     #ss.play(10)
 
 
     #this will close any lingering Pygame windows (from using 'run')
-    #clean_up()
+    clean_up()
