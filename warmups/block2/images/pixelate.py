@@ -38,10 +38,8 @@ def pixelate(img: Image) -> Image:
 
 if __name__ == "__main__":
     bird = Image_File("data/images/lorikeet.bmp")
-    bird2 = Image_File("data/images/lorikeet.bmp")
 
     pixelated_bird = pixelate_n(bird, 9)
     pixelated_bird.show()
-    print(bird2.compare(pixelated_bird))
 
     clean_up()
