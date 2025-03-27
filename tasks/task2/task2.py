@@ -11,10 +11,10 @@ from utils.images import (
     BLACK,
     Image,
     Image_File,
+    Image_New,
     Image_Sequence,
     Pixel,
     clean_up,
-    pygame,
 )
 
 PATH = "/".join(__file__.replace("\\", "/").split("/")[:-1])
@@ -70,7 +70,12 @@ def patterns(width: int, height: int, seeds:list[int], colour: Pixel) -> Image:
         for the pixel in column C in row R, if the pixels in C+1 and C-1
         on row R-1 do not match, then that pixel will be coloured.
     """
-    return NotImplemented
+    img = Image_New(width, height)
+
+    for seed in seeds:
+        img.set_pixel(seed, 0, colour)
+
+    return img
 
 
 def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
@@ -84,13 +89,16 @@ if __name__ == "__main__":
     lorikeet = Image_File("data/images/lorikeet.bmp")
 
     old = old_timer(lorikeet)
+    old.show()
 
     av_dist = avg_distance_to(lorikeet, Pixel(20, 100, 222))
+    print(av_dist)
 
     #croppy = crop(lorikeet, 200, 100, 222, 40)
     #part_crop = crop(lorikeet, -100, -30, 222, 40)
 
-    #pat = patterns(9, 5, [2, 7], BLACK)
+    pat = patterns(9, 5, [2, 7], BLACK)
+    pat.show()
 
     #shuffly = shuffle_bars(lorikeet, 9)
     #shuffly.play(8)
