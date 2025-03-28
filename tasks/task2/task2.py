@@ -9,6 +9,7 @@ sys.path[0] = os.getcwd()
 
 from utils.images import (
     BLACK,
+    WHITE,
     Image,
     Image_File,
     Image_New,
@@ -16,6 +17,7 @@ from utils.images import (
     Pixel,
     clean_up,
 )
+from utils.personal import better_show
 
 PATH = "/".join(__file__.replace("\\", "/").split("/")[:-1])
 
@@ -73,7 +75,19 @@ def patterns(width: int, height: int, seeds:list[int], colour: Pixel) -> Image:
     img = Image_New(width, height)
 
     for seed in seeds:
-        img.set_pixel(seed, 0, colour)
+        if seed >= 0 and seed < width:
+            img.set_pixel(seed, 0, colour)
+
+    for row in range(1, height):
+        for col in range(0, width):
+            if col - 1 == -1:
+                if img.get_pixel(col + 1, row - 1) != WHITE:
+                    img.set_pixel(col, row, colour)
+            elif col + 1 == width:
+                if img.get_pixel(col - 1, row - 1) != WHITE:
+                    img.set_pixel(col, row, colour)
+            elif img.get_pixel(col + 1, row - 1) != img.get_pixel(col - 1, row - 1):
+                img.set_pixel(col, row, colour)
 
     return img
 
@@ -88,17 +102,17 @@ def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
 if __name__ == "__main__":
     lorikeet = Image_File("data/images/lorikeet.bmp")
 
-    old = old_timer(lorikeet)
-    old.show()
+    #old = old_timer(lorikeet)
+    #old.show()
 
-    av_dist = avg_distance_to(lorikeet, Pixel(20, 100, 222))
-    print(av_dist)
+    #av_dist = avg_distance_to(lorikeet, Pixel(20, 100, 222))
+    #print(av_dist)
 
     #croppy = crop(lorikeet, 200, 100, 222, 40)
     #part_crop = crop(lorikeet, -100, -30, 222, 40)
 
-    pat = patterns(9, 5, [2, 7], BLACK)
-    pat.show()
+    pat = patterns(350, 700, [0, 349, 500], Pixel (33, 133, 133)) 
+    better_show(pat)
 
     #shuffly = shuffle_bars(lorikeet, 9)
     #shuffly.play(8)
