@@ -1,6 +1,8 @@
 """Provides solutions for the 7 functions in task 2's assignment
 """
+import math
 import os
+import random
 import sys
 
 # fix path to allow utils imports
@@ -60,8 +62,18 @@ def avg_distance_to(img: Image, colour: Pixel) -> float:
 
 def crop(img: Image, x: int, y: int, width: int, height: int) -> Image:
     """Returns a new Image which contains the cropped region of the given Image."""
-    return NotImplemented
+    top_left_x = max(0, x)
+    top_left_y = max(0, y)
+    bottom_right_x = min(img.get_width(), width + x)
+    bottom_right_y = min(img.get_height(), height + y)
 
+    cropped = Image_New(bottom_right_x - top_left_x, bottom_right_y - top_left_y)
+
+    for row in range(0, bottom_right_y - top_left_y):
+        for col in range(0, bottom_right_x - top_left_x):
+            cropped.set_pixel(col, row, img.get_pixel(col + top_left_x, row + top_left_y))
+
+    return cropped
 
 def patterns(width: int, height: int, seeds:list[int], colour: Pixel) -> Image:
     """Returns a new Image (width x height) which contains a pattern. 
@@ -97,7 +109,29 @@ def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
     equal sized vertical bars cut into the Image. Each frame of the Image Sequence has
     the vertical bars of the image randomly shuffled and re-drawn in a different order. 
     """
-    return NotImplemented
+    shuffled = Image_Sequence()
+
+    cut_pos:list[tuple[int, int]] = []
+    bar_width = (img.get_width() // cuts)
+
+    for cut in range(cuts):
+        cut_pos.append((bar_width * cut, bar_width * (cut + 1)))
+
+    for i in range(10):
+        random.shuffle(cut_pos)
+
+        frame = Image_New(img.get_width() - img.get_width() % cuts, img.get_height())
+
+        for i in range(cuts):
+            start, end = cut_pos[i]
+
+            for row in range(0, img.get_height()):
+                for col in range(start, end):
+                    frame.set_pixel(col - start + bar_width * i, row, img.get_pixel(col, row))
+
+        shuffled.add_image(frame)
+
+    return shuffled
 
 if __name__ == "__main__":
     lorikeet = Image_File("data/images/lorikeet.bmp")
@@ -109,12 +143,15 @@ if __name__ == "__main__":
     #print(av_dist)
 
     #croppy = crop(lorikeet, 200, 100, 222, 40)
+    #print(croppy.compare(Image_File(f"{PATH}/croppy_sample.bmp")))
+    #croppy.show()
     #part_crop = crop(lorikeet, -100, -30, 222, 40)
+    #part_crop.show()
 
-    pat = patterns(350, 700, [0, 349, 500], Pixel (33, 133, 133)) 
-    better_show(pat)
+    #pat = patterns(350, 700, [0, 349, 500], Pixel (33, 133, 133)) 
+    #better_show(pat)
 
-    #shuffly = shuffle_bars(lorikeet, 9)
-    #shuffly.play(8)
+    shuffly = shuffle_bars(lorikeet, 9)
+    shuffly.play(8)
 
     clean_up()
