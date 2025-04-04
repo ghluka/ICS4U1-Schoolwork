@@ -177,10 +177,7 @@ def linear_chroma_cycle(img: Image, start: Pixel, end: Pixel, n: int = 16) -> Im
     # add all frames to image sequence
     seq = Image_Sequence()
 
-    frames = [*frames, *reversed(frames)]
-    ##alternative code ^:
-    ##for frame in reversed(frames):
-    ##    frames.append(frame)
+    frames.extend(reversed(frames))
 
     for frame in frames:
         seq.add_image(frame)
