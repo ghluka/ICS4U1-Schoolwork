@@ -1,6 +1,5 @@
 """Provides solutions for the 7 functions in task 2's assignment
 """
-import math
 import os
 import random
 import sys
@@ -19,7 +18,6 @@ from utils.images import (
     Pixel,
     clean_up,
 )
-from utils.personal import better_show
 
 PATH = "/".join(__file__.replace("\\", "/").split("/")[:-1])
 
@@ -27,7 +25,7 @@ PATH = "/".join(__file__.replace("\\", "/").split("/")[:-1])
 def old_timer(img: Image) -> Image:
     """Returns a tinted copy of the Image argument that looks like it is "old fashioned".
     The applied tint the following transformation to every pixel's RGB values: 
-        (R, G, B) → (0.39R + 0.77G + 0.19B, 0.35R + 0.69G + 0.17B, 0.27R + 0.53G + 0.13B) 
+        (R, G, B) -> (0.39R + 0.77G + 0.19B, 0.35R + 0.69G + 0.17B, 0.27R + 0.53G + 0.13B) 
     """
     img = img.copy()
 
@@ -112,7 +110,7 @@ def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
     shuffled = Image_Sequence()
 
     cut_pos:list[tuple[int, int]] = []
-    bar_width = (img.get_width() // cuts)
+    bar_width = img.get_width() // cuts
 
     for cut in range(cuts):
         cut_pos.append((bar_width * cut, bar_width * (cut + 1)))
@@ -133,25 +131,68 @@ def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
 
     return shuffled
 
+
+def linear_chroma_cycle(img: Image, start: Pixel, end: Pixel, n: int = 16) -> Image_Sequence:
+    """Returns a new Image Sequence with 2*n (wherein n > 2) frames.
+    It transitions linearly from a starting colour to an end colour,
+    each colour in the transition is applied to the provided Image as a filter,
+    where the luminance is determined by the formula:
+        (R, G, B) -> 0.298936021293775R + 0.587043074451121G + 0.114020904255103B
+    The filter is applied to each frame, where every pixel is changed to the
+    luminance of each pixel, multiplied by the colour in the transition.
+    This transition lasts n frames, then it replays those n frames in reverse
+    to achieve a smooth, infinite loop effect.
+    """
+    frames:list[Image] = []
+
+    targets:list[Pixel] = []
+    for i in range(max(2, n)):
+        targets.append(Pixel(
+            round(start.get_r() + (end.get_r() - start.get_r()) * (i / (n - 1))),
+            round(start.get_g() + (end.get_g() - start.get_g()) * (i / (n - 1))),
+            round(start.get_b() + (end.get_b() - start.get_b()) * (i / (n - 1))),
+        ))
+
+    for target in targets:
+        frame = img.copy()
+
+        for row in range(0, img.get_height()):
+            for col in range(0, img.get_width()):
+                pix = img.get_pixel(col, row)
+
+                # grayscale value by weighted sum of the R, G, and B components
+                # weights were taken from MATLAB's rgb2gray function
+                brightness = 0.298936021293775 * pix.get_r() + \
+                    0.587043074451121 * pix.get_g() + \
+                    0.114020904255103 * pix.get_b()
+
+                frame.set_pixel(col, row, Pixel(
+                    round(brightness / 255 * target.get_r()),
+                    round(brightness / 255 * target.get_g()),
+                    round(brightness / 255 * target.get_b())
+                ))
+
+        frames.append(frame)
+
+    # add all frames to image sequence
+    seq = Image_Sequence()
+
+    frames = [*frames, *reversed(frames)]
+    ##alternative code ^:
+    ##for frame in reversed(frames):
+    ##    frames.append(frame)
+
+    for frame in frames:
+        seq.add_image(frame)
+
+    return seq
+
 if __name__ == "__main__":
     lorikeet = Image_File("data/images/lorikeet.bmp")
 
-    #old = old_timer(lorikeet)
-    #old.show()
-
-    #av_dist = avg_distance_to(lorikeet, Pixel(20, 100, 222))
-    #print(av_dist)
-
-    #croppy = crop(lorikeet, 200, 100, 222, 40)
-    #print(croppy.compare(Image_File(f"{PATH}/croppy_sample.bmp")))
-    #croppy.show()
-    #part_crop = crop(lorikeet, -100, -30, 222, 40)
-    #part_crop.show()
-
-    #pat = patterns(350, 700, [0, 349, 500], Pixel (33, 133, 133)) 
-    #better_show(pat)
-
-    shuffly = shuffle_bars(lorikeet, 9)
-    shuffly.play(8)
+    c = linear_chroma_cycle(lorikeet, Pixel(138, 35, 135), Pixel(242, 113, 33), 32)
+    c_2 = linear_chroma_cycle(lorikeet, Pixel(255, 0, 255), Pixel(255, 0, 0))
+    c.play(60)
+    c_2.play(24)
 
     clean_up()
