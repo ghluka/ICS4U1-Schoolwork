@@ -1,5 +1,6 @@
 """Provides solutions for the 7 functions in task 2's assignment
 """
+import math
 import os
 import random
 import sys
@@ -135,7 +136,7 @@ def shuffle_bars(img: Image, cuts: int) -> Image_Sequence:
 def linear_chroma_cycle(img: Image, start: Pixel, end: Pixel, n: int = 16) -> Image_Sequence:
     """Returns a new Image Sequence with 2*n (wherein n > 2) frames.
     It transitions linearly from a starting colour to an end colour,
-    each colour in the transition is applied to the provided Image as a filter,
+    each colour in the transition is applied to the provided Image as a filter
     where the luminance is determined by the formula:
         (R, G, B) -> 0.298936021293775R + 0.587043074451121G + 0.114020904255103B
     The filter is applied to each frame, where every pixel is changed to the
@@ -184,12 +185,40 @@ def linear_chroma_cycle(img: Image, start: Pixel, end: Pixel, n: int = 16) -> Im
 
     return seq
 
+
+def radial_gradient(width:int, height:int, start:Pixel, end:Pixel) -> Image:
+    img = Image_New(width, height)
+
+    mid_x = math.floor(width // 2)
+    mid_y = math.floor(height // 2)
+
+    n = ((mid_y)**2 + (mid_x)**2) ** .5
+
+    for row in range(0, height):
+        for col in range(0, width):
+            dist = ((row - mid_y)**2 + (col - mid_x)**2) ** .5
+
+            pix = Pixel(
+                max(0, min(255, round(start.get_r() + (end.get_r() - start.get_r()) * (dist / (n - 1))))),
+                max(0, min(255, round(start.get_g() + (end.get_g() - start.get_g()) * (dist / (n - 1))))),
+                max(0, min(255, round(start.get_b() + (end.get_b() - start.get_b()) * (dist / (n - 1))))),
+            )
+
+            img.set_pixel(col, row, pix)
+
+    return img
+
 if __name__ == "__main__":
     lorikeet = Image_File("data/images/lorikeet.bmp")
 
-    c = linear_chroma_cycle(lorikeet, Pixel(138, 35, 135), Pixel(242, 113, 33), 32)
-    c_2 = linear_chroma_cycle(lorikeet, Pixel(255, 0, 255), Pixel(255, 0, 0))
-    c.play(60)
-    c_2.play(24)
+    lcc = linear_chroma_cycle(lorikeet, Pixel(138, 35, 135), Pixel(242, 113, 33), 32)
+    lcc_2 = linear_chroma_cycle(lorikeet, Pixel(255, 0, 255), Pixel(255, 0, 0))
+    lcc.play(60)
+    lcc_2.play(24)
+    
+    rg = radial_gradient(370, 250, Pixel(255, 255, 255), Pixel(255, 255, 255))
+    rg_2 = radial_gradient(720, 720, Pixel(222, 223, 221), Pixel(222, 220, 0))
+    rg.show()
+    rg_2.show()
 
     clean_up()
