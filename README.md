@@ -46,6 +46,10 @@ All the different blocks and their respective concepts learned.
 
     Concepts learned: Classes, inheritance, private variables, static variables
 
-- [ ] 2. Images
+- [x] 2. Images
 
-    Concepts learned: Pixels
+    Concepts learned: Pixels, Image Manipulation, Image Creation, Animated Sequences
+
+- [ ] 3. Linked Lists
+
+    Concepts learned: Nodes
