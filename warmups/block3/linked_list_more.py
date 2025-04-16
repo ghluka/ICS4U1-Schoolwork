@@ -68,12 +68,6 @@ class Linked_List2(Linked_List):
 
         current.set_next(other_list._Linked_List__head)
 
-    def remove(self, value:object) -> None:
-        '''
-        Removes the specified object from the Linked_List, if present.
-        '''
-        #.... this one will require signifiantly more effort...
-
 if __name__ == "__main__":
     lst = Linked_List2()
     lst2 = Linked_List2()
