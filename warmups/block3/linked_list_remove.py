@@ -5,7 +5,7 @@ import sys
 # note to self: do not submit assignments with this "import" hack, it's just to get utils working
 sys.path[0] = os.getcwd()
 
-from utils.linked_list import Linked_List, List_Node
+from utils.linked_list_starter import Linked_List, List_Node
 
 
 class Linked_List2(Linked_List):
