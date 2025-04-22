@@ -50,6 +50,6 @@ All the different blocks and their respective concepts learned.
 
     Concepts learned: Pixels, Image Manipulation, Image Creation, Animated Sequences
 
-- [ ] 3. Linked Lists
+- [ ] 3. Data Structures & Algorithms
 
-    Concepts learned: Nodes
+    Concepts learned: Nodes, Linked Lists, Recursion
