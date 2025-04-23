@@ -1,17 +1,18 @@
-def iterative_palindrome(s:str) -> bool:
-    return NotImplemented
-
 def recursive_palindrome(s:str) -> bool:
-    return NotImplemented
+    s = s.strip().lower()
+    if len(s) <= 1:
+        return True
+    elif s[0] == s[-1]:
+        return recursive_palindrome(s[1:-1])
+    return False
 
 if __name__ == "__main__":
-    true = "racecar"
+    true = "a man a plan a canal panama"
     false = "loop"
 
-    test_1a = iterative_palindrome(true)
-    test_2a = recursive_palindrome(true)
-    test_1b = iterative_palindrome(false)
-    test_2b = recursive_palindrome(false)
+    test_1 = recursive_palindrome(true)
+    test_2 = recursive_palindrome(false)
 
-    print(test_1a==test_2a and test_2a==True)
-    print(test_1b==test_2b and test_2b==False)
+    print("  recursive_palindrome():")
+    print(f"\t> \"{true}\"\n\t   is a palindrome?", test_1, "\n")
+    print(f"\t> \"{false}\"\n\t   is a palindrome?", test_2)
