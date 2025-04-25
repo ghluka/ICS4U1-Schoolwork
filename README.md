@@ -44,7 +44,7 @@ All the different blocks and their respective concepts learned.
 
 - [x] 1. Review & Classes
 
-    Concepts learned: Classes, inheritance, private variables, static variables
+    Concepts learned: Classes, Inheritance, Private Variables, Static Variables
 
 - [x] 2. Images
 
@@ -52,4 +52,4 @@ All the different blocks and their respective concepts learned.
 
 - [ ] 3. Data Structures & Algorithms
 
-    Concepts learned: Nodes, Linked Lists, Recursion
+    Concepts learned: Nodes, Linked Lists, Recursion, Big O Notation, Searching, Sorting
