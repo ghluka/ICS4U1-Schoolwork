@@ -111,11 +111,3 @@ if __name__ == "__main__":
 
     print(course)
     print("-" * BAR_WIDTH)
-
-    """
-    TODO:
-     - Course_Section.split_section()
-     - Course_Section.students_at_risk()
-     - Course_Section.class_list()
-     - Course_Section.__str__()
-    """

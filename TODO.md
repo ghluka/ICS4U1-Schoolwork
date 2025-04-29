@@ -1,0 +1,42 @@
+# ✅ Todo
+
+- [Block 1 exercise](exercises/block1/students/solution.py)
+    - To implement:
+        - Course_Section.split_section()
+        - Course_Section.students_at_risk()
+        - Course_Section.class_list()
+        - Course_Section.__str__()
+    - Due: Feb 15
+- [Block 2 exercise](exercises/block2/marchbreakreview/solution.py)
+    - To implement:
+        - slide()
+        - x_box()
+        - slide_sequence()
+    - Due: Mar 18
+- [Block 3 warmup: Linked lists](warmups/block3/linked_list_extras.py)
+    - To implement:
+        - get_value_at()
+        - insert_at()
+        - reverse()
+- Block 3 warmup: Recursion exercises
+    - [Block 3 warmup: Recursion exercise 3](warmups/block3/recursive_exercise_3.py)
+    - [Block 3 warmup: Recursion exercise 4](warmups/block3/recursive_exercise_3.py)
+    - [Block 3 warmup: Recursion exercise 6](warmups/block3/recursive_exercise_3.py)
+    - [Block 3 warmup: Recursion exercise 7](warmups/block3/recursive_exercise_3.py)
+    - [Block 3 warmup: Recursion exercise 8](warmups/block3/recursive_exercise_3.py)
+    - [Block 3 warmup: Recursion exercise 9](warmups/block3/recursive_exercise_3.py)
+- [Block 3 warmup: Search and sorting algorithms](warmups/block3/sorting_1.py)
+    - To implement:
+        - linear_search()
+        - binary_search()
+        - selection_sort()
+        - bubble_sort()
+- [Block 3 warmup 2: Search and sorting algorithms](warmups/block3/sorting_2.py)
+    - To implement:
+        - merge_sort()
+        - merge()
+        - merge_sort_2()
+        - merge_2()
+        - quick_sort()
+        - quick_sort_ip()
+        - partition()
