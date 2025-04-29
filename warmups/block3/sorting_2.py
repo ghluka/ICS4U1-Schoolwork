@@ -2,74 +2,18 @@ import tracemalloc
 from random import randrange, shuffle
 from time import perf_counter
 
+from sorting_1 import *
 
-def linear_search(nums:list, key:int) -> int:
+
+def mergesort(nums:list) -> list:
     return NotImplemented
 
-def binary_search(nums:list, key:int) -> int:
-    return NotImplemented
-
-def selection_sort(nums:list) -> list:
-    return NotImplemented
-
-def bubble_sort(nums:list) -> list:
+def quicksort(nums:list) -> list:
     return NotImplemented
 
 # ==== TESTER ==== #
 
 if __name__ == "__main__":
-    print("==== test searching ====")
-    
-    #test searches
-    nums = [2, 19, 24, 25, 70, 77, 96, 105, 107, 151, 298, 380, 381, 399, 2000]
-
-    print(f"list: {nums}")
-    keys = [107, 151, 2, 2000, 1, 2001, 108]
-    for key in keys:
-        ls_result = linear_search(nums, key)
-        bs_result = binary_search(nums, key)
-        print(f"key: {key:<5} lin:{ls_result:>3} bin:{bs_result:>3}")
-
-
-    #timer for SEARCHES
-    #ALL UNIQUE VALUES, SORTED ORDER:
-    NUM_VALUES = 800000
-    nums = list(range(1, NUM_VALUES+1))
-
-
-    #key = nums[randrange(NUM_VALUES+1)]  #random value
-    #key = NUM_VALUES + 1                  #unfound value (worst case)
-
-    keys = []
-    for i in range(9):
-        keys.append(randrange(0, NUM_VALUES+1))
-    keys.append(NUM_VALUES+1)
-
-
-    print(f"Keys to search: {keys}")
-    print("Beginning searches")
-    tracemalloc.start()
-    start = perf_counter()
-    for key in keys:
-        lin_search_pos = linear_search(nums, key)
-    end = perf_counter()   
-    current, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-    print(f"total linear search time: {end - start:.5f} seconds")
-    print(f"Peak memory usage: {peak} bytes")
-    
-
-    print()
-    tracemalloc.start()
-    start = perf_counter()
-    for k in keys:
-        bin_search_pos = binary_search(nums, key)
-    end = perf_counter()    
-    current, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-    print(f"total binary search time: {end - start:.5f} seconds")
-    print(f"Peak memory usage: {peak} bytes")
-
     print("==== test sorts ====")
 
     NUM_VALUES = 5000
@@ -116,6 +60,8 @@ if __name__ == "__main__":
     #equivalent copys, so all sorts are comparable
     nums_copy1 = nums.copy()
     nums_copy2 = nums.copy()
+    nums_copy3 = nums.copy()
+    nums_copy4 = nums.copy()
 
     print()
     print("beginning sorts...")
@@ -144,14 +90,40 @@ if __name__ == "__main__":
     print(f"selection-sort time taken: {end - start:.5f} seconds")
     print(f"Peak memory usage: {peak} bytes")
 
+
     print()
-    print("starting python sort()...")
+    print("starting quick-sort...")
     tracemalloc.start()
     start = perf_counter()
-    nums_copy2.sort()
+    nums_copy2 = quicksort(nums_copy2)
     end = perf_counter()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     #print(nums_copy2)
+    print(f"quick-sort time taken: {end - start:.5f} seconds")
+    print(f"Peak memory usage: {peak} bytes")
+
+
+    print()
+    print("starting merge-sort...")
+    start = perf_counter()
+    tracemalloc.start()
+    nums_copy3 = mergesort(nums_copy3)
+    end = perf_counter()
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    #print(nums_copy3)
+    print(f"merge-sort time taken: {end - start:.5f} seconds")
+    print(f"Peak memory usage: {peak} bytes")
+
+    print()
+    print("starting python sort()...")
+    tracemalloc.start()
+    start = perf_counter()
+    nums_copy4.sort()
+    end = perf_counter()
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    #print(nums_copy4)
     print(f"python sort() time taken: {end - start:.5f} seconds")
     print(f"Peak memory usage: {peak} bytes")
