@@ -6,10 +6,50 @@ from sorting_1 import *
 
 
 def mergesort(nums:list) -> list:
-    return NotImplemented
+    if len(nums) <= 1:
+        return nums
+
+    mid = len(nums) // 2
+    left = mergesort(nums[0:mid-1])
+    right = mergesort(nums[mid:len(nums)-1])
+
+    return merge(left, right)
+
+def merge(left:list, right:list) -> list:
+    """Helper function for mergesort()."""
+    merged = []
+
+    while len(left) > 0 and len(right) > 0:
+        if left[0] < right[0]:
+            merged.append(left[0])
+            left.pop(0)
+        else:
+            merged.append(right[0])
+            right.pop(0)
+
+    merged.extend(left)
+    merged.extend(right)
+
+    return merged
 
 def quicksort(nums:list) -> list:
-    return NotImplemented
+    if len(nums) < 1:
+        return []
+
+    pivot = [nums[0] ]
+    lesser = []
+    greater = []
+
+    for i in range(1, len(nums) - 1):
+        if nums[i] < pivot[0]:
+            lesser.append(nums[i])
+        elif nums[i] > pivot[0]:
+            greater.append(nums[i])
+        else:
+            pivot.append(nums[i])
+
+    return [*quicksort(lesser), *pivot, *quicksort(greater)]
+    
 
 # ==== TESTER ==== #
 
@@ -58,6 +98,7 @@ if __name__ == "__main__":
 
 
     #equivalent copys, so all sorts are comparable
+    print(nums)
     nums_copy1 = nums.copy()
     nums_copy2 = nums.copy()
     nums_copy3 = nums.copy()
@@ -99,7 +140,7 @@ if __name__ == "__main__":
     end = perf_counter()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
-    #print(nums_copy2)
+    print(nums_copy2)
     print(f"quick-sort time taken: {end - start:.5f} seconds")
     print(f"Peak memory usage: {peak} bytes")
 
@@ -112,7 +153,7 @@ if __name__ == "__main__":
     end = perf_counter()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
-    #print(nums_copy3)
+    print(nums_copy3)
     print(f"merge-sort time taken: {end - start:.5f} seconds")
     print(f"Peak memory usage: {peak} bytes")
 
