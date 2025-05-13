@@ -52,4 +52,4 @@ All the different blocks and their respective concepts learned.
 
 - [ ] 3. Data Structures & Algorithms
 
-    Concepts learned: Nodes, Linked Lists, Recursion, Big O Notation, Searching, Sorting
+    Concepts learned: Nodes, Linked Lists, Recursion, Searching, Sorting, Big O Notation, Stacks, Binary Search Trees
