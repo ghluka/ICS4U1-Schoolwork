@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     print("=-- index() test --=")
     print("Index of 0:", test.index(0)) # -1
-    print("Index of 0:", test.index(6)) # 3
+    print("Index of 6:", test.index(6)) # 3
 
     print("=-- average_depth() test --=")
     print(test.average_depth()) # 2.75

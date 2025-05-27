@@ -141,15 +141,35 @@ class Linked_List(utils.linked_list.Linked_List):
             if n >= left_index:
                 sliced.insert_at_end(List_Node(current.get_data(), None))
             n += 1
+            current = current.get_next()
         
         return sliced
 
-
     def left_rotate(self, size: int) -> None:
-        return NotImplemented
+        if size == 0:
+            return
+
+        head = self.__head
+
+        self.__head = head.get_next()
+        self.__tail.set_next(head)
+        head.set_next(None)
+
+        self.left_rotate(size - 1)
 
     def right_rotate(self, size: int) -> None:
-        return NotImplemented
+        n = 0
+        stop = self.size() - size
+        current = self.__head
+
+        while n < stop:
+            self.insert_at_end(current)
+            n += 1
+            current = current.get_next()
+        
+        self.__head = current
+        self.__tail.set_next(None)
+
 
 if __name__ == "__main__":
     pass
