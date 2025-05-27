@@ -117,10 +117,33 @@ class Linked_List(utils.linked_list.Linked_List):
     
     # Functions
     def get_largest(self) -> object:
-        return NotImplemented
+        return self.__get_largest_helper(self.__head)
+
+    def __get_largest_helper(self, node: List_Node) -> object:
+        if node == None:
+            return None
+        elif node.get_next() == None:
+            return node.get_data()
+        else:
+            next_data = self.__get_largest_helper(node.get_next())
+            return max(node.get_data(), next_data)
 
     def slice(self, left_index: int, right_index: int) -> Self:
-        return NotImplemented
+        sliced = Linked_List()
+
+        if right_index < left_index:
+            return sliced
+        
+        n = 0
+        current = self.__head
+
+        while current.get_next() != None and n < right_index:
+            if n >= left_index:
+                sliced.insert_at_end(List_Node(current.get_data(), None))
+            n += 1
+        
+        return sliced
+
 
     def left_rotate(self, size: int) -> None:
         return NotImplemented

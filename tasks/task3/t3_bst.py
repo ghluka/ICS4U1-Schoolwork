@@ -29,15 +29,8 @@ class BSTree(utils.bst.BSTree):
 
 if __name__ == "__main__":
     test = BSTree()
-    test.insert(8)
-    test.insert(3)
-    test.insert(1)
-    test.insert(6)
-    test.insert(4)
-    test.insert(7)
-    test.insert(10)
-    test.insert(14)
-    test.insert(13)
+    for i in [8, 3, 1, 6, 4, 7, 10, 14, 13]:
+        test.insert(i)
     test.print_tree()
 
     print("=-- index() test --=")
