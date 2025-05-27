@@ -16,6 +16,12 @@ class Linked_List(utils.linked_list.Linked_List):
         super().__init__()
         self.__tail = None
 
+    def get_tail(self):
+        '''
+        Accessor for the value at the end of this linked list.
+        '''
+        return self.__tail
+
     def insert(self, value: object) -> None:
         '''
         Inserts the given value at the front of this linked list.
@@ -116,19 +122,28 @@ class Linked_List(utils.linked_list.Linked_List):
         self.__tail = tail
     
     # Functions
-    def get_largest(self) -> object:
+    def get_largest(self) -> object|None:
+        """Returns the largest data value in the linked list.
+        If the list is empty, it returns None.
+        """
         return self.__get_largest_helper(self.__head)
 
-    def __get_largest_helper(self, node: List_Node) -> object:
+    def __get_largest_helper(self, node: List_Node) -> object|None:
+        """Helper function for get_largest"""
         if node == None:
             return None
         elif node.get_next() == None:
             return node.get_data()
-        else:
-            next_data = self.__get_largest_helper(node.get_next())
-            return max(node.get_data(), next_data)
+        next_data = self.__get_largest_helper(node.get_next())
+        return max(node.get_data(), next_data)
 
     def slice(self, left_index: int, right_index: int) -> Self:
+        """Returns a new Linked_List containing copies of all the data elements
+        from left_index up to but not including right_index.
+
+        The ordering isn't changed and if the right_index is greater than the
+        left_index, the slice will be empty.
+        """
         sliced = Linked_List()
 
         if right_index < left_index:
@@ -137,15 +152,16 @@ class Linked_List(utils.linked_list.Linked_List):
         n = 0
         current = self.__head
 
-        while current.get_next() != None and n < right_index:
+        while current.get_next() != None or n < right_index:
             if n >= left_index:
-                sliced.insert_at_end(List_Node(current.get_data(), None))
+                sliced.insert_at_end(current.get_data())
             n += 1
             current = current.get_next()
         
         return sliced
 
     def left_rotate(self, size: int) -> None:
+        """Moves the first `size` items to the end"""
         if size == 0:
             return
 
@@ -153,6 +169,7 @@ class Linked_List(utils.linked_list.Linked_List):
 
         self.__head = head.get_next()
         self.__tail.set_next(head)
+        self.__tail = head
         head.set_next(None)
 
         self.left_rotate(size - 1)
@@ -163,13 +180,39 @@ class Linked_List(utils.linked_list.Linked_List):
         current = self.__head
 
         while n < stop:
-            self.insert_at_end(current)
+            self.__tail.set_next(current)
+            self.__tail = current
+
             n += 1
             current = current.get_next()
-        
+
         self.__head = current
         self.__tail.set_next(None)
 
-
 if __name__ == "__main__":
-    pass
+    list_1 = Linked_List()
+    list_2 = Linked_List()
+    list_3 = Linked_List()
+    for i in [1, 2, 3, 4, 5]:
+        list_1.insert_at_end(i)
+        list_2.insert_at_end(i)
+        list_3.insert_at_end(i)
+    print(list_1)
+
+    print("=-- get_largest() test --=")
+    print(list_1.get_largest()) # 5
+
+    print("=-- slice() test --=")
+    print(list_1.slice(1, 4)) # |-[2]->[3]->[4]->x
+
+    print("=-- left_rotate() test --=")
+    list_2.left_rotate(1)
+    print("Size 1 rotation:", list_2) # |-[2]->[3]->[4]->[5]->[1]->x
+    list_2.left_rotate(2)
+    print("Size 3 rotation:", list_2) # |-[4]->[5]->[1]->[2]->[3]->x
+
+    print("=-- right_rotate() test --=")
+    list_3.right_rotate(1)
+    print("Size 1 rotation:", list_3) # |-[5]->[1]->[2]->[3]->[4]->x
+    list_3.right_rotate(2)
+    print("Size 3 rotation:", list_3) # |-[3]->[4]->[5]->[1]->[2]->x
