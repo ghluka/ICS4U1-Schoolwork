@@ -1,10 +1,4 @@
-import os
-import sys
 from typing import Self
-
-# fix path to allow utils imports
-# note to self: do not submit assignments with this "import" hack, it's just to get utils working
-sys.path[0] = os.getcwd()
 
 import utils.linked_list
 from utils.linked_list import List_Node
@@ -129,11 +123,14 @@ class Linked_List(utils.linked_list.Linked_List):
         return self.__get_largest_helper(self.__head)
 
     def __get_largest_helper(self, node: List_Node) -> object|None:
-        """Helper function for get_largest"""
-        if node == None:
+        """Helper function for get_largest."""
+        # handle empty linked list
+        if not node:
             return None
-        elif node.get_next() == None:
+        # handle tails
+        elif not node.get_next():
             return node.get_data()
+
         next_data = self.__get_largest_helper(node.get_next())
         return max(node.get_data(), next_data)
 
@@ -146,14 +143,18 @@ class Linked_List(utils.linked_list.Linked_List):
         """
         sliced = Linked_List()
 
+        # empty linked list if right_index is greater than left_index 
         if right_index < left_index:
             return sliced
         
         n = 0
         current = self.__head
 
-        while current.get_next() != None or n < right_index:
+        # loop while theres still elements and we havent reached the right_index
+        while current.get_next() != None and n < right_index:
+            # check if the element is within the slice
             if n >= left_index:
+                # add the current element in the sliced list
                 sliced.insert_at_end(current.get_data())
             n += 1
             current = current.get_next()
@@ -161,25 +162,31 @@ class Linked_List(utils.linked_list.Linked_List):
         return sliced
 
     def left_rotate(self, size: int) -> None:
-        """Moves the first `size` items to the end"""
+        """Moves the first `size` items of the linked list to the end."""
+        # base case for recursion, stops if the size is 0
         if size == 0:
             return
 
         head = self.__head
 
+        # set the head to the tail
         self.__head = head.get_next()
         self.__tail.set_next(head)
         self.__tail = head
         head.set_next(None)
 
+        # recurse with a size 1 smaller
         self.left_rotate(size - 1)
 
     def right_rotate(self, size: int) -> None:
+        """Moves the last `size` items of the linked list to the start."""
         n = 0
         stop = self.size() - size
         current = self.__head
 
+        # loop until we've reached the last `size` elements
         while n < stop:
+            # move the elements to the back
             self.__tail.set_next(current)
             self.__tail = current
 
